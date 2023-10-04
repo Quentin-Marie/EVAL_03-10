@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos oeuvres
+{% endblock %}
+
+{% block body %}
+	<table>
+		<thead>
+			<tr>
+				<th>Nom de l'oeuvre</th>
+				<th>Artiste</th>
+				<th>Photo</th>
+				<th>Prix</th>
+				<th>Commander</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for product in products %}
+				<tr>
+					<td>
+						{{product.pictureName}}
+					</td>
+					<td>
+						{{product.title}}
+					</td>
+					<td>
+						<img src="{{ asset('upload/') }}{{ product.pictureSrc }}" width="300" alt="">
+					</td>
+					<td>
+						{{product.price}}
+					</td>
+					<td>
+						<a href="{{ path('add', {'id':product.id}) }}" class="btn btn-secondary">Ajouter au panier</a>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a class="btn btn-danger" href=" {{path('destroy')}} ">Effacer</a>
+{% endblock %}

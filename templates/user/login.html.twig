@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{title}}
+{% endblock %}
+
+{% block body %}
+
+	<form action="{{ path('login') }}" method="post" class="col-md-4 mx-auto text-center">
+        
+		<div class="form-group">
+			<label for="inputEmail">E-mail</label>
+			<input type="text" class="form-control" id="inputEmail" name="_username" placeholder="Votre e-mail">
+		</div>
+
+		<div class="form-group">
+			<label for="inputPassword">Mot de passe</label>
+			<input type="password" class="form-control" id="inputPassword" name="_password" placeholder="Votre mot de passe">
+		</div>
+
+		<input type="submit" value='Connexion' class="btn btn-success mt-3">
+	</form>
+
+	{# <a href="{{ path('reset_password') }}">Mot de passe oublié?</a> #}
+
+{% endblock %}
