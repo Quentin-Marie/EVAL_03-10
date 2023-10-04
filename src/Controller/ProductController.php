@@ -17,14 +17,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 
 
-#[Route('/product')]
+#[Route('/')]
 class ProductController extends AbstractController
 {
     #[Route('/', name: 'app_product')]
     #[Route('/', name: 'redirection')]
     public function index(ProductRepository $productRepository, CartService $cart): Response
     {
-        $products = $productRepository->findAll();
+        $products = $productRepository->findBy(['disponibility'=>0]);
 
         dump($cart->getCartWithData());
 
@@ -40,6 +40,10 @@ class ProductController extends AbstractController
     #[Route('/ajouter', name: 'ajouter')]
     public function ajouter(EntityManagerInterface $manager, HttpFoundationRequest $request): Response
     {
+        if (empty($this->getUser()) || $this->getUser()->getRoles() != 'ROLE_ADMIN') { // si l'utilisateur n'est pas connecté ou si ça n'est pas un admin
+            return $this->redirectToRoute('app_product');
+        }
+
 
         $product = new Product();
 
@@ -71,9 +75,34 @@ class ProductController extends AbstractController
         );
     }
 
+    #[Route('/supprimer/{id}', name: 'supprimer')]
+    public function supprimer(ProductRepository $productRepository, EntityManagerInterface $manager, $id): Response
+    {
+    
+    $product = $productRepository->find($id);
+
+    unlink($this->getParameter('upload_dir').'/'.$product->getPictureSrc());
+
+    $manager->remove($product);
+
+    $manager->flush();
+    
+$this->addFlash(
+   'success',
+   'L\'oeuvre a bien été retirée'
+);
+
+    return $this->redirectToRoute('app-product');
+    
+    }
+
     #[Route('/categories', name: 'categories')]
     public function categories(EntityManagerInterface $manager, HttpFoundationRequest $request): Response
     {
+
+        if (empty($this->getUser()) || $this->getUser()->getRoles() != 'ROLE_ADMIN') { // si l'utilisateur n'est pas connecté ou si ça n'est pas un admin
+            return $this->redirectToRoute('app_product');
+        }
 
         $category = new Category();
 

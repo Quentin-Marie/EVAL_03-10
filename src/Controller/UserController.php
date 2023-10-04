@@ -31,6 +31,9 @@ class UserController extends AbstractController
     #[Route('/register', name: 'register')]
     public function register(EntityManagerInterface $manager, Request $request, UserPasswordHasherInterface $hasher): Response
     {
+        if ($user = $this->getUser()) {
+            return $this->redirectToRoute('home');
+        }
         $user = new User();
 
         $form = $this->createForm(RegistrationType::class, $user);
@@ -45,7 +48,7 @@ class UserController extends AbstractController
             $manager->persist($user);
             $manager->flush();
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('');
 
             $this->addFlash(
                 'success',
@@ -62,7 +65,9 @@ class UserController extends AbstractController
     #[Route('/login', name: 'login')]
     public function login(): Response
     {
-
+        if (!empty( $this->getUser())) {
+            return $this->redirectToRoute('home');
+        }
 
         return $this->render(
             'user/login.html.twig',

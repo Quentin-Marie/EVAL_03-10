@@ -31,10 +31,13 @@
 					</td>
 					<td>
 						<a href="{{ path('add', {'id':product.id}) }}" class="btn btn-secondary">Ajouter au panier</a>
+						{# {% if app.user and is_granted('ROLE_ADMIN') %} #}
+							<a href="{{ path('supprimer', {'id':product.id}) }}" class="btn btn-secondary">Retirer l'oeuvre</a>
+						{# {% endif %} #}
 					</td>
 				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
-	<a class="btn btn-danger" href=" {{path('destroy')}} ">Effacer</a>
+	<a class="btn btn-danger" href=" {{path('destroy')}} ">Effacer votre séléction</a>
 {% endblock %}

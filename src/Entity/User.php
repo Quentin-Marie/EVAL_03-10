@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[UniqueEntity(fields: ['email'], message: 'Un compte exist déjà à cette adresse mail')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
@@ -19,12 +21,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'Champs Obligatoire')]
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    #[Assert\NotBlank(message: 'Champs Obligatoire')]
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+    #[Assert\NotBlank(message: 'Champs Obligatoire')]
     #[ORM\Column(length: 255)]
     private ?string $nickname = null;
 
@@ -134,7 +139,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getUserIdentifier(): string
     {
-       return (string) $this->email;
+        return (string) $this->email;
     }
-
 }
